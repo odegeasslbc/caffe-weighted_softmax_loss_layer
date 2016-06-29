@@ -1,3 +1,7 @@
+#this script read a list of images and feed them into caffe model to 
+#get the predict label value of these images by the model
+#and will write the result into a text file
+
 # set up Python environment: numpy for numerical routines, and matplotlib for plotting
 import matplotlib
 import numpy as np
