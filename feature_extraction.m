@@ -1,3 +1,6 @@
+%this script is serve to extract features of each layer in a caffe model when given test images,
+%and save the features into matrixs images number N x layer param M.
+
 %if exist('use_gpu', 'var') && use_gpu  
   caffe.set_mode_gpu();  
   gpu_id = 0;  % we will use the first gpu 
