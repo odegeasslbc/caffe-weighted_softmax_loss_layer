@@ -1,3 +1,5 @@
+#this script serve as a quick way to generate train.txt and val.txt for caffe 
+
 #import subprocess
 import re
 import sys
