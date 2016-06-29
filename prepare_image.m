@@ -1,3 +1,5 @@
+%this matlab function prepare the test image into a image_data that can be passed into caffemodel 
+%so that the image can be read and analyzed by the model.
 % ------------------------------------------------------------------------  
 function crops_data = prepare_image(im)  
 % ------------------------------------------------------------------------  
