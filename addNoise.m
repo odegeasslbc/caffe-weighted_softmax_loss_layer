@@ -1,6 +1,6 @@
 function [] = addNoise( rootFolder, distination )
 % This function will read all images in your subfolders and create 
-% several versions of the original images and save into the distination 
+% several versions of new images based on the original images and save into the distination 
 % folder.
 
 % This function takes the 
