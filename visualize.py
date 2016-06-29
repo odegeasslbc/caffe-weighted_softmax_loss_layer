@@ -1,3 +1,6 @@
+# get the features of each layer in the give caffe model from given images
+# and visalize the output activations (features/ data)
+
 import numpy as np
 import matplotlib.pyplot as plt
 #%matplotlib inline
