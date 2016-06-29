@@ -1,3 +1,6 @@
+# create npy mean file that can be read by caffe python interface
+# from the .binaryprotxt file
+
 import caffe
 import numpy as np
 import sys
