@@ -1,0 +1,661 @@
+name: "Art_AlexNet"
+
+layer {
+  name: "image_data"
+  type: "Data"
+  top: "image_data"
+  top: "label_style"
+  include {
+    phase: TRAIN
+  }
+  transform_param {
+    mirror: true
+    crop_size: 227
+    mean_file: "/media/bolt3/research/database_3_label/image_mean.binaryproto"
+  }
+  data_param {
+    source: "/media/bolt3/research/database_3_label/train_style_lmdb"
+    batch_size: 256
+    backend: LMDB
+  }
+}
+layer {
+  name: "genere_data"
+  type: "Data"
+  top: "junk_img_genere_data"
+  top: "label_genere"
+  include {
+    phase: TRAIN
+  }
+  data_param {
+    source: "/media/bolt3/research/database_3_label/train_genere_lmdb"
+    batch_size: 256
+    backend: LMDB
+  }
+}
+layer {
+  name: "artist_data"
+  type: "Data"
+  top: "junk_img_art_data"
+  top: "label_artist"
+  include {
+    phase: TRAIN
+  }
+  data_param {
+    source: "/media/bolt3/research/database_3_label/train_artist_lmdb"
+    batch_size: 256
+    backend: LMDB
+  }
+}
+
+layer {
+  name: "wc_genere_data"
+  type: "Data"
+  top: "junk_img_wcg_data"
+  top: "label_wcg"
+  include {
+    phase: TRAIN
+  }
+  data_param {
+    source: "/media/bolt3/research/database_3_label/train_wc_genere_lmdb"
+    batch_size: 256
+    backend: LMDB
+  }
+}
+layer {
+  name: "wc_artist_data"
+  type: "Data"
+  top: "junk_img_wca_data"
+  top: "label_wca"
+  include {
+    phase: TRAIN
+  }
+  data_param {
+    source: "/media/bolt3/research/database_3_label/train_wc_artist_lmdb"
+    batch_size: 256
+    backend: LMDB
+  }
+}
+
+layer {
+  name: "image_data"
+  type: "Data"
+  top: "image_data"
+  top: "label_style"
+  include {
+    phase: TEST
+  }
+  transform_param {
+    mirror: true
+    crop_size: 227
+    mean_file: "/media/bolt3/research/database_3_label_confirmed/image_mean.binaryproto"
+  }
+  data_param {
+    source: "/media/bolt3/research/database_3_label_confirmed/val_style_lmdb"
+    batch_size: 256
+    backend: LMDB
+  }
+}
+layer {
+  name: "genere_data"
+  type: "Data"
+  top: "junk_img_genere_data"
+  top: "label_genere"
+  include {
+    phase: TEST
+  }
+  data_param {
+    source: "/media/bolt3/research/database_3_label_confirmed/val_genere_lmdb"
+    batch_size: 256
+    backend: LMDB
+  }
+}
+layer {
+  name: "artist_data"
+  type: "Data"
+  top: "junk_img_art_data"
+  top: "label_artist"
+  include {
+    phase: TEST
+  }
+  data_param {
+    source: "/media/bolt3/research/database_3_label_confirmed/val_artist_lmdb"
+    batch_size: 256
+    backend: LMDB
+  }
+}
+
+layer {
+  name: "conv1"
+  type: "Convolution"
+  bottom: "image_data"
+  top: "conv1"
+  param {
+    lr_mult: 1
+    decay_mult: 1
+  }
+  param {
+    lr_mult: 2
+    decay_mult: 0
+  }
+  convolution_param {
+    num_output: 96
+    kernel_size: 7
+    stride: 4
+    weight_filler {
+      type: "gaussian"
+      std: 0.01
+    }
+    bias_filler {
+      type: "constant"
+      value: 0
+    }
+  }
+}
+layer {
+  name: "relu1"
+  type: "ReLU"
+  bottom: "conv1"
+  top: "conv1"
+}
+layer {
+  name: "norm1"
+  type: "LRN"
+  bottom: "conv1"
+  top: "norm1"
+  lrn_param {
+    local_size: 5
+    alpha: 0.0001
+    beta: 0.75
+  }
+}
+layer {
+  name: "pool1"
+  type: "Pooling"
+  bottom: "norm1"
+  top: "pool1"
+  pooling_param {
+    pool: MAX
+    kernel_size: 3
+    stride: 2
+  }
+}
+layer {
+  name: "conv2"
+  type: "Convolution"
+  bottom: "pool1"
+  top: "conv2"
+  param {
+    lr_mult: 1
+    decay_mult: 1
+  }
+  param {
+    lr_mult: 2
+    decay_mult: 0
+  }
+  convolution_param {
+    num_output: 256
+    pad: 2
+    kernel_size: 5
+    group: 2
+    weight_filler {
+      type: "gaussian"
+      std: 0.01
+    }
+    bias_filler {
+      type: "constant"
+      value: 0.1
+    }
+  }
+}
+layer {
+  name: "relu2"
+  type: "ReLU"
+  bottom: "conv2"
+  top: "conv2"
+}
+layer {
+  name: "norm2"
+  type: "LRN"
+  bottom: "conv2"
+  top: "norm2"
+  lrn_param {
+    local_size: 5
+    alpha: 0.0001
+    beta: 0.75
+  }
+}
+layer {
+  name: "pool2"
+  type: "Pooling"
+  bottom: "norm2"
+  top: "pool2"
+  pooling_param {
+    pool: MAX
+    kernel_size: 3
+    stride: 2
+  }
+}
+layer {
+  name: "conv3"
+  type: "Convolution"
+  bottom: "pool2"
+  top: "conv3"
+  param {
+    lr_mult: 1
+    decay_mult: 1
+  }
+  param {
+    lr_mult: 2
+    decay_mult: 0
+  }
+  convolution_param {
+    num_output: 384
+    pad: 1
+    kernel_size: 3
+    weight_filler {
+      type: "gaussian"
+      std: 0.01
+    }
+    bias_filler {
+      type: "constant"
+      value: 0
+    }
+  }
+}
+layer {
+  name: "relu3"
+  type: "ReLU"
+  bottom: "conv3"
+  top: "conv3"
+}
+layer {
+  name: "conv4"
+  type: "Convolution"
+  bottom: "conv3"
+  top: "conv4"
+  param {
+    lr_mult: 1
+    decay_mult: 1
+  }
+  param {
+    lr_mult: 2
+    decay_mult: 0
+  }
+  convolution_param {
+    num_output: 384
+    pad: 1
+    kernel_size: 3
+    group: 2
+    weight_filler {
+      type: "gaussian"
+      std: 0.01
+    }
+    bias_filler {
+      type: "constant"
+      value: 0.1
+    }
+  }
+}
+layer {
+  name: "relu4"
+  type: "ReLU"
+  bottom: "conv4"
+  top: "conv4"
+}
+layer {
+  name: "conv5"
+  type: "Convolution"
+  bottom: "conv4"
+  top: "conv5"
+  param {
+    lr_mult: 1
+    decay_mult: 1
+  }
+  param {
+    lr_mult: 2
+    decay_mult: 0
+  }
+  convolution_param {
+    num_output: 256
+    pad: 1
+    kernel_size: 3
+    group: 2
+    weight_filler {
+      type: "gaussian"
+      std: 0.01
+    }
+    bias_filler {
+      type: "constant"
+      value: 0.1
+    }
+  }
+}
+layer {
+  name: "relu5"
+  type: "ReLU"
+  bottom: "conv5"
+  top: "conv5"
+}
+layer {
+  name: "pool5"
+  type: "Pooling"
+  bottom: "conv5"
+  top: "pool5"
+  pooling_param {
+    pool: MAX
+    kernel_size: 3
+    stride: 2
+  }
+}
+layer {
+  name: "fc6"
+  type: "InnerProduct"
+  bottom: "pool5"
+  top: "fc6"
+  param {
+    lr_mult: 1
+    decay_mult: 1
+  }
+  param {
+    lr_mult: 2
+    decay_mult: 0
+  }
+  inner_product_param {
+    num_output: 4096
+    weight_filler {
+      type: "gaussian"
+      std: 0.005
+    }
+    bias_filler {
+      type: "constant"
+      value: 0.1
+    }
+  }
+}
+layer {
+  name: "relu6"
+  type: "ReLU"
+  bottom: "fc6"
+  top: "fc6"
+}
+layer {
+  name: "drop6"
+  type: "Dropout"
+  bottom: "fc6"
+  top: "fc6"
+  dropout_param {
+    dropout_ratio: 0.5
+  }
+}
+layer {
+  name: "fc7"
+  type: "InnerProduct"
+  bottom: "fc6"
+  top: "fc7"
+  param {
+    lr_mult: 1
+    decay_mult: 1
+  }
+  param {
+    lr_mult: 2
+    decay_mult: 0
+  }
+  inner_product_param {
+    num_output: 4096
+    weight_filler {
+      type: "gaussian"
+      std: 0.005
+    }
+    bias_filler {
+      type: "constant"
+      value: 0.1
+    }
+  }
+}
+layer {
+  name: "relu7"
+  type: "ReLU"
+  bottom: "fc7"
+  top: "fc7"
+}
+layer {
+  name: "drop7"
+  type: "Dropout"
+  bottom: "fc7"
+  top: "fc7"
+  dropout_param {
+    dropout_ratio: 0.5
+  }
+}
+
+layer {
+  name: "fc8_style"
+  type: "InnerProduct"
+  bottom: "fc7"
+  top: "fc8_style"
+  param {
+    lr_mult: 1
+    decay_mult: 1
+  }
+  param {
+    lr_mult: 2
+    decay_mult: 0
+  }
+  inner_product_param {
+    num_output: 20
+    weight_filler {
+      type: "gaussian"
+      std: 0.005
+    }
+    bias_filler {
+      type: "constant"
+      value: 0.1
+    }
+  }
+}
+layer {
+  name: "fc8_artist"
+  type: "InnerProduct"
+  bottom: "fc7"
+  top: "fc8_artist"
+  param {
+    lr_mult: 1
+    decay_mult: 1
+  }
+  param {
+    lr_mult: 2
+    decay_mult: 0
+  }
+  inner_product_param {
+    num_output: 66
+    weight_filler {
+      type: "gaussian"
+      std: 0.005
+    }
+    bias_filler {
+      type: "constant"
+      value: 0.1
+    }
+  }
+}
+layer {
+  name: "fc8_genere"
+  type: "InnerProduct"
+  bottom: "fc7"
+  top: "fc8_genere"
+  param {
+    lr_mult: 1
+    decay_mult: 1
+  }
+  param {
+    lr_mult: 2
+    decay_mult: 0
+  }
+  inner_product_param {
+    num_output: 17
+    weight_filler {
+      type: "gaussian"
+      std: 0.005
+    }
+    bias_filler {
+      type: "constant"
+      value: 0.1
+    }
+  }
+}
+
+layer {
+  name: "accuracy_style"
+  type: "Accuracy"
+  bottom: "fc8_style"
+  bottom: "label_style"
+  top: "accuracy_style"
+  include {
+    phase: TEST
+  }
+}
+layer {
+  name: "accuracy_genere"
+  type: "Accuracy"
+  bottom: "fc8_genere"
+  bottom: "label_genere"
+  top: "accuracy_genere"
+  include {
+    phase: TEST
+  }
+}
+layer {
+  name: "accuracy_artist"
+  type: "Accuracy"
+  bottom: "fc8_artist"
+  bottom: "label_artist"
+  top: "accuracy_artist"
+  include {
+    phase: TEST
+  }
+}
+
+layer {
+  name: "loss_style"
+  type: "SoftmaxWithLoss"
+  bottom: "fc8_style"
+  bottom: "label_style"
+  top: "loss_style"
+  loss_param{
+     normalize: 1
+  }
+  include {
+    phase: TRAIN
+  }
+}
+
+layer {
+  name: "loss_genere"
+  type: "WeightedSoftmaxWithLoss"
+  bottom: "fc8_genere"
+  bottom: "label_genere"
+  bottom: "label_wcg"
+  top: "loss_genere"
+  loss_param{
+     normalize: 1
+  }
+  include {
+    phase: TRAIN
+  }
+}
+
+layer {
+  name: "loss_artist"
+  type: "WeightedSoftmaxWithLoss"
+  bottom: "fc8_artist"
+  bottom: "label_artist"
+  bottom: "label_wca"
+  top: "loss_artist"
+  loss_param{
+     normalize: 1
+  }
+  include {
+    phase: TRAIN
+  }
+}
+
+layer {
+  name: "loss_style"
+  type: "SoftmaxWithLoss"
+  bottom: "fc8_style"
+  bottom: "label_style"
+  top: "loss_style"
+  loss_param{
+     normalize: 1
+  }
+  include {
+    phase: TEST
+  }
+}
+
+layer {
+  name: "loss_genere"
+  type: "SoftmaxWithLoss"
+  bottom: "fc8_genere"
+  bottom: "label_genere"
+  top: "loss_genere"
+  loss_param{
+     normalize: 1
+  }
+  include {
+    phase: TEST
+  }
+}
+
+layer {
+  name: "loss_artist"
+  type: "SoftmaxWithLoss"
+  bottom: "fc8_artist"
+  bottom: "label_artist"
+  top: "loss_artist"
+  loss_param{
+     normalize: 1
+  }
+  include {
+    phase: TEST
+  }
+}
+
+layer {
+  name: "junk_img"
+  bottom: "junk_img_genere_data"
+  bottom: "junk_img_art_data"
+  bottom: "junk_img_wcg_data"
+  bottom: "junk_img_wca_data"
+  top: "junk_img"
+  type: "Concat"
+  concat_param {
+    axis: 1
+  }
+  include {
+    phase: TRAIN
+  }
+}
+layer {
+  name: "junk_img"
+  bottom: "junk_img_genere_data"
+  bottom: "junk_img_art_data"
+  top: "junk_img"
+  type: "Concat"
+  concat_param {
+    axis: 1
+  }
+  include {
+    phase: TEST
+  }
+}
+layer {
+  name: "junk_loss"
+  type: "SoftmaxWithLoss"
+  bottom: "junk_img"
+  bottom: "label_style"
+  top: "junk_loss"
+  loss_weight: 0
+}
+
