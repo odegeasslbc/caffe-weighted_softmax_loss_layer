@@ -2,8 +2,6 @@
 Source files of a weighted_softmax_with_loss layer for latest version of caffe (http://caffe.berkeleyvision.org/). 
 Allow wild cards to be accepted as a bottom input of the loss layer
 
-It is just a small work inspired by Gustav (https://github.com/gustavla/caffe/tree/gustav) at deepdish (http://deepdish.io/2014/11/04/caffe-with-weighted-samples/).
-
 #Usage
 
     put the .hpp file in:      
