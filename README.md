@@ -5,11 +5,15 @@ Allow wild cards to be accepted as a bottom input of the loss layer
 It is just a small work inspired by Gustav at deepdish.
 
 #Usage
-put the .hpp file          in /path-to-your-caffe-master/include/caffe/layers/
-put the .cpp and .cu files in /path-to-your-caffe-master/src/caffe/layers/
+
+    put the .hpp file in      
+    /path-to-your-caffe-master/include/caffe/layers/   
+    put the .cpp and .cu files in 
+    /path-to-your-caffe-master/src/caffe/layers/ 
+
 
 in caffe prototxt file:
-
+```
 layer {
   name: "image_data"
   type: "Data"
@@ -30,3 +34,4 @@ layers {
     bottom: "sample_weight"  # <-- add this
     top: "loss"
 }
+```
