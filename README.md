@@ -24,7 +24,7 @@ layer {
   name: "junk_image_data"
   type: "Data"
   top: "junk_image_data"    # <-- we don't need this junk image
-  top: "sample_weight"      # <-- but we do need this label
+  top: "sample_weight"      # <-- but we do need this label as a weight you want to assign when calculate the loss
 }
 layers {
     name: "loss"
