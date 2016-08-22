@@ -9,7 +9,7 @@ Allow wild cards to be accepted as a bottom input of the loss layer
     put the .cpp and .cu files in: 
     /path-to-your-caffe-master/src/caffe/layers/ 
 
-then compile it in terminal at  /path-to-your-caffe-master   type   "make all"
+then compile it in terminal at  /path-to-your-caffe-master   by typing   "make all"
 
 in caffe prototxt file:
 ```
