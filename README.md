@@ -11,6 +11,7 @@ It is just a small work inspired by Gustav (https://github.com/gustavla/caffe/tr
     put the .cpp and .cu files in: 
     /path-to-your-caffe-master/src/caffe/layers/ 
 
+then compile it in terminal at  /path-to-your-caffe-master   type   "make all"
 
 in caffe prototxt file:
 ```
